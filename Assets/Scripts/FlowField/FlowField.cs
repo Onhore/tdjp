@@ -48,9 +48,10 @@ public class FlowField
             {
                 if (col.gameObject.layer == 8)
                 {
-                    
+
                     //Debug.Log(curCell.staticCost);
-                    StaticField(curCell, 2, 2, Multiply.Increase);
+                    //StaticField(curCell, 2, 2, Multiply.Increase);
+                    curCell.staticCost = MAX_COST;
                     continue;
                 }
                 if (col.gameObject.layer == 9)

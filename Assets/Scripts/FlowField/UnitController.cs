@@ -40,8 +40,8 @@ public class UnitController : MonoBehaviour
             Rigidbody unitRB = unit.GetComponent<Rigidbody>();
             //unitRB.velocity = moveDirection * moveSpeed;
             unitRB.AddForce(moveDirection * moveSpeed, ForceMode.Force);
-        }
-    }   //cell
+        }//
+    }   
 
     private void SpawnUnits()
     {
