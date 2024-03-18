@@ -35,7 +35,7 @@ public class GridController : MonoBehaviour
             Cell destinationCell = curFlowField.GetCellFromWorldPos(gate.transform.position);
             curFlowField.GateField(destinationCell);
             Debug.Log("Done");
-           // curFlowField.CreateFlowField();
+            curFlowField.CreateFlowField();
 
             gridDebug.DrawFlowField();
         }

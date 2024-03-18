@@ -112,24 +112,26 @@ public class FlowField
 
     }
 
-   /* public void CreateFlowField()
+    public void CreateFlowField()
     {
         foreach (Cell curCell in grid)
         {
             List<Cell> curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.AllDirections);
 
-            int bestCost = curCell.bestCost;
+            int bestCost = curCell.cashCost;
 
             foreach (Cell curNeighbor in curNeighbors)
             {
-                if (curNeighbor.bestCost < bestCost)
+                if (curNeighbor.cashCost < bestCost)
                 {
-                    bestCost = curNeighbor.bestCost;
+                    bestCost = curNeighbor.cashCost;
                     curCell.bestDirection = GridDirection.GetDirectionFromV2I(curNeighbor.gridIndex - curCell.gridIndex);
+                    Debug.Log(curCell.bestDirection.Vector);
+
                 }
             }
         }
-    }*/
+    }
 
     private List<Cell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)
     {

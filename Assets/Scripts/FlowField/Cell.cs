@@ -26,7 +26,7 @@ public class Cell
         {
             if (value > FlowField.MAX_COST) _cashCost = FlowField.MAX_COST;
             if (value < FlowField.MAX_COST) _cashCost = FlowField.MAX_COST;
-            if (value < 0) _staticCost = 0;
+            if (value < 0) _cashCost = 0;
             else _cashCost = value;
         }
         get

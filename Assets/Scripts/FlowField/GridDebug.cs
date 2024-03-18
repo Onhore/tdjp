@@ -40,7 +40,7 @@ public class GridDebug : MonoBehaviour
                 break;
 
             case FlowFieldDisplayType.DestinationIcon:
-                //DisplayDestinationCell();
+                DisplayDestinationCell();
                 break;
 
             default:
@@ -57,11 +57,11 @@ public class GridDebug : MonoBehaviour
         }
     }
 
-    /*private void DisplayDestinationCell()
+    private void DisplayDestinationCell()
     {
         if (curFlowField == null) { return; }
-        DisplayCell(curFlowField.destinationCell);
-    }*/
+        DisplayCell(curFlowField.GateCell);  
+    }
 
     private void DisplayCell(Cell cell)
     {
