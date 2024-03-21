@@ -35,11 +35,11 @@ public class UnitController : MonoBehaviour
         if (gridController.curFlowField == null) { return; }
         foreach (GameObject unit in unitsInGame)
         {//
-            Cell cellBelow = gridController.curFlowField.GetCellFromWorldPos(unit.transform.position);
-            Vector3 moveDirection = new Vector3(cellBelow.bestDirection.Vector.x, 0, cellBelow.bestDirection.Vector.y);
-            Rigidbody unitRB = unit.GetComponent<Rigidbody>();
-            //unitRB.velocity = moveDirection * moveSpeed;
-            unitRB.AddForce(moveDirection * moveSpeed, ForceMode.Force);
+            //Cell cellBelow = gridController.curFlowField.GetCellFromWorldPos(unit.transform.position);
+            //Vector3 moveDirection = new Vector3(cellBelow.bestDirection.Vector.x, 0, cellBelow.bestDirection.Vector.y);
+            //Rigidbody unitRB = unit.GetComponent<Rigidbody>();
+            ////unitRB.velocity = moveDirection * moveSpeed;
+            //unitRB.AddForce(moveDirection * moveSpeed, ForceMode.Force);
         }//
     }   
 
@@ -48,6 +48,7 @@ public class UnitController : MonoBehaviour
         GameObject newUnit1 = Instantiate(unitPrefab);
         newUnit1.transform.parent = transform;
         newUnit1.transform.position = Spawner.transform.position;
+        newUnit1.GetComponent<Goblin>().GridController = gridController;
         unitsInGame.Add(newUnit1);
         //
         //Vector2Int gridSize = gridController.gridSize;

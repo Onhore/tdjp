@@ -50,7 +50,8 @@ public class FlowField
                 {
 
                     //Debug.Log(curCell.staticCost);
-                    //StaticField(curCell, 2, 2, Multiply.Increase);
+                    //curCell.staticCost = MAX_COST;
+                    StaticField(curCell, 2, 10, Multiply.Increase);
                     curCell.staticCost = MAX_COST;
                     continue;
                 }
@@ -65,10 +66,10 @@ public class FlowField
 
     public void StaticField(Cell staticCell, int radius, int cost, Multiply multiplier)
     {
-        staticCell.staticCost = MAX_COST;
         Vector2Int startCell = new Vector2Int(Math.Max(0,(staticCell.gridIndex.x-radius)), Math.Max(0,(staticCell.gridIndex.y-radius)));
-        Vector2Int endCell = new Vector2Int(Math.Min((staticCell.gridIndex.x + radius),gridSize.x), Math.Min((staticCell.gridIndex.y + radius),gridSize.y));
-
+        Vector2Int endCell = new Vector2Int(Math.Min((staticCell.gridIndex.x + radius),gridSize.x-1), Math.Min((staticCell.gridIndex.y + radius),gridSize.y-1));
+        //Debug.DrawLine()
+        Debug.Log(startCell + " " + endCell);
         for (int x = startCell.x; x <= endCell.x; x++)
         {
             for (int y = startCell.y; y <= endCell.y; y++)
@@ -117,8 +118,17 @@ public class FlowField
     {
         foreach (Cell curCell in grid)
         {
-            List<Cell> curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.AllDirections);
+            bool nearWall = false;
+            List<Cell> curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.CardinalDirections);
+            foreach (Cell neighbour in curNeighbors)
+            {
+                if (neighbour.staticCost == MAX_COST)
+                    nearWall = true;
+            }
 
+            if (!nearWall)
+                curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.AllDirections);
+            
             int bestCost = curCell.cashCost;
 
             foreach (Cell curNeighbor in curNeighbors)
@@ -127,7 +137,7 @@ public class FlowField
                 {
                     bestCost = curNeighbor.cashCost;
                     curCell.bestDirection = GridDirection.GetDirectionFromV2I(curNeighbor.gridIndex - curCell.gridIndex);
-                    Debug.Log(curCell.bestDirection.Vector);
+                    //Debug.Log(curCell.bestDirection.Vector);
 
                 }
             }

@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 7092132907092870532}
   - component: {fileID: 1840466110779792829}
   - component: {fileID: 5674626597132249162}
+  - component: {fileID: 4400149044057407024}
   m_Layer: 6
   m_Name: goblintest 2
   m_TagString: Untagged
@@ -111,7 +112,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.92, y: -0.138, z: 10.14}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3883090452357066821}
@@ -126,7 +127,7 @@ Rigidbody:
   m_GameObject: {fileID: 5014208179401364884}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.33
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -142,7 +143,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &5674626597132249162
 CapsuleCollider:
@@ -151,7 +152,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5014208179401364884}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 02cbe7aef995f894b8acc21879916f5a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -163,7 +164,25 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.57
-  m_Height: 1.42
+  m_Radius: 0.36
+  m_Height: 1.79
   m_Direction: 1
   m_Center: {x: 0.36, y: 0.93, z: 0.03}
+--- !u!114 &4400149044057407024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5014208179401364884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c1ee6fc07d6d043ab163a3839a7007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 20
+  speed: 3
+  damage: 1
+  GridController: {fileID: 0}
+  rb: {fileID: 1840466110779792829}
+  smoothTimeMovement: 0.25

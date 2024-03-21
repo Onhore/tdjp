@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-public enum FlowFieldDisplayType { None, AllIcons, DestinationIcon, CostField, IntegrationField };
+public enum FlowFieldDisplayType { None, AllIcons, DestinationIcon, CostField, IntegrationField, Indexes };
 
 public class GridDebug : MonoBehaviour
 {
@@ -42,7 +42,6 @@ public class GridDebug : MonoBehaviour
             case FlowFieldDisplayType.DestinationIcon:
                 DisplayDestinationCell();
                 break;
-
             default:
                 break;
         }
@@ -181,7 +180,12 @@ public class GridDebug : MonoBehaviour
                     Handles.Label(curCell.worldPos, curCell.cashCost.ToString(), style);
                 }
                 break;
-
+            case FlowFieldDisplayType.Indexes:
+                foreach (Cell curCell in curFlowField.grid)
+                {
+                    Handles.Label(curCell.worldPos, curCell.gridIndex.ToString(), style);
+                }
+                break;
             default:
                 break;
         }
