@@ -1,12 +1,12 @@
 using UnityEditor;
 using UnityEngine;
-
+using GridSystem.Flowfields;
 
 public enum FlowFieldDisplayType { None, AllIcons, DestinationIcon, CostField, IntegrationField, Indexes };
 
-public class GridDebug : MonoBehaviour
+public class FlowFieldDebug : MonoBehaviour
 {
-    public GridController gridController;
+    public FlowFieldController gridController;
     public bool displayGrid;
 
     public FlowFieldDisplayType curDisplayType;

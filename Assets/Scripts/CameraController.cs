@@ -1,66 +1,66 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
+using static UnityEngine.GridBrushBase;
 
 public class CameraController : MonoBehaviour
 {
+    public GameObject Camera;
     public float panSpeed = 30f;
-    public float panBorderThickness = 10f;
 
     public float scrollSpeed = 5f;
-    public float minY = 10f;
-    public float maxY = 80f;
-    public bool bordersMovement = false;
+    public Vector2 ScrollRange;
+    public float rotationSpeed = 50f;
     public float smoothTimeMovement = 0.25f;
     public float smoothTimeScroll = 0.25f;
-    private Vector3 velocity = Vector3.zero;
+    public float smoothRotation = 0.25f;
+    public Vector2 RotateRange;
 
-    // Update is called once per frame
+    private Vector3 velocity = Vector3.zero;
+    private Vector3 velocityZoom = Vector3.zero;
+    private Vector3 rotateVelocity = Vector3.zero;
+    private float rotateInput;
+    private float scrollInput;
+    private Vector3 moveInputX;
+    private Vector3 moveInputY;
+    private Vector3 scrollDirection;
+    private Vector3 moveDirection;
+    private Vector3 rotationDirection;
+
     void Update()
     {
+        CameraMove();
 
-        /*if (GameManager.GameIsOver)
-        {
-            this.enabled = false;
-            return;
-        }*/
+        CameraRotate();
 
-        if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness && bordersMovement)
-        {
-            //transform.Translate(Vector3.Scale(transform.forward.normalized,(Vector3.forward+Vector3.right)) * panSpeed * Time.deltaTime, Space.World);
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position + Vector3.Scale(transform.forward.normalized, (Vector3.forward + Vector3.right)) * panSpeed, ref velocity, smoothTimeMovement);
-        }
-        if (Input.GetKey("s") || Input.mousePosition.y <= panBorderThickness && bordersMovement)
-        {
-            //transform.Translate(-1*Vector3.Scale(transform.forward.normalized, (Vector3.forward + Vector3.right)) * panSpeed * Time.deltaTime, Space.World);
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position - Vector3.Scale(transform.forward.normalized, (Vector3.forward + Vector3.right)) * panSpeed, ref velocity, smoothTimeMovement);
-        }
-        if (Input.GetKey("d") || Input.mousePosition.x >= Screen.width - panBorderThickness && bordersMovement)
-        {
-            //transform.Translate(Vector3.Scale(transform.right.normalized, (Vector3.forward + Vector3.right)) * panSpeed * Time.deltaTime, Space.World);
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position + Vector3.Scale(transform.right.normalized, (Vector3.forward + Vector3.right)) * panSpeed, ref velocity, smoothTimeMovement);
-        }
-        if (Input.GetKey("a") || Input.mousePosition.x <= panBorderThickness && bordersMovement)
-        {
-            //transform.Translate(-1 * Vector3.Scale(transform.right.normalized, (Vector3.forward + Vector3.right)) * panSpeed * Time.deltaTime, Space.World);
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position - Vector3.Scale(transform.right.normalized, (Vector3.forward + Vector3.right)) * panSpeed, ref velocity, smoothTimeMovement);
-        }
-
-        //float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        //Vector3 pos = transform.position;
+        CameraScroll();
         
-        //Debug.Log(transform.forward.normalized + " " + scroll);
-        //pos.y -= scroll * 1000 * scrollSpeed * Time.deltaTime;
-        //pos.y = Mathf.Clamp(pos.y, minY, maxY);
+    }
+    private void CameraMove()
+    {
+        moveInputX = Vector3.Scale(Camera.transform.forward.normalized, Vector3.forward + Vector3.right) * Input.GetAxisRaw("Vertical");
+        moveInputY = Vector3.Scale(Camera.transform.right.normalized, Vector3.forward + Vector3.right) * Input.GetAxisRaw("Horizontal");
+        moveDirection = transform.position + (moveInputX + moveInputY).normalized * panSpeed;
 
-        //transform.position = pos;
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        transform.position = Vector3.SmoothDamp(transform.position, transform.position + transform.forward.normalized * scrollSpeed * scroll * 1000, ref velocity, smoothTimeScroll);
+        transform.position = Vector3.SmoothDamp(transform.position, moveDirection, ref velocity, smoothTimeMovement);
+    }
+    private void CameraRotate()
+    {
+        rotateInput = Input.GetAxisRaw("Rotation");
+        rotationDirection = new Vector3(transform.eulerAngles.x, Mathf.Clamp(transform.eulerAngles.y + rotationSpeed * rotateInput, RotateRange.x, RotateRange.y), transform.eulerAngles.z);
+        transform.eulerAngles = Vector3.SmoothDamp(transform.eulerAngles, rotationDirection, ref rotateVelocity, smoothRotation);
+    }
+    private void CameraScroll()
+    {
+        scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        scrollDirection = Camera.transform.position + Camera.transform.forward.normalized * scrollSpeed * scrollInput * 1000;
+        
+        Camera.transform.position = Vector3.SmoothDamp(Camera.transform.position, scrollDirection, ref velocityZoom, smoothTimeScroll);
 
-        //transform.position += transform.forward.normalized * scrollSpeed * scroll * 1000 * Time.deltaTime;
+        
     }
 }

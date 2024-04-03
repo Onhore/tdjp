@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GridSystem.Flowfields;
 
-public class GridController : MonoBehaviour
+public class FlowFieldController : MonoBehaviour
 {
     public Vector2Int gridSize;
     public float cellRadius = 0.5f;
     public FlowField curFlowField;
-    public GridDebug gridDebug;
+    public Dictionary<string, FlowField> FlowfieldsDictionary;
+    public FlowFieldDebug gridDebug;
     public GameObject gate;
 
     private void InitializeFlowField()

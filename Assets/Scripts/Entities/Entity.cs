@@ -8,7 +8,7 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] protected uint health;
     [SerializeField] protected float speed;
     [SerializeField] protected uint damage;
-    public GridController GridController;
+    public FlowFieldController GridController;
     public uint Health { get { return health; } }
     public float Speed { get { return speed; } }
     public uint Damage {  get { return damage; } }

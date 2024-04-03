@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    public GridController gridController;
+    public FlowFieldController gridController;
     public GameObject unitPrefab;
     public GameObject Spawner;
     public int numUnitsPerSpawn;

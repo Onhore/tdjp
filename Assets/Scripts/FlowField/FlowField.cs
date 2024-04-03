@@ -4,188 +4,193 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class FlowField
+namespace GridSystem.Flowfields
 {
-    public const int MAX_COST = short.MaxValue;
-    public Cell[,] grid { get; private set; }
-    public Vector2Int gridSize { get; private set; }
-    public float cellRadius { get; private set; }
-    public Cell GateCell;
-    //public uint length = 10;
-
-    private float cellDiameter;
-    
-
-    public FlowField(float _cellRadius, Vector2Int _gridSize)
+    [System.Serializable]
+    public class FlowField
     {
-        cellRadius = _cellRadius;
-        cellDiameter = cellRadius * 2f;
-        gridSize = _gridSize;
-    }
+        public string tag;
+        public const int MAX_COST = short.MaxValue;
+        public Cell[,] grid { get; private set; }
+        public Vector2Int gridSize { get; private set; }
+        public float cellRadius { get; private set; }
+        public Cell GateCell;
+        //public uint length = 10;
 
-    public void CreateGrid()
-    {
-        grid = new Cell[gridSize.x, gridSize.y];
+        private float cellDiameter;
 
-        for (int x = 0; x < gridSize.x; x++)
+
+        public FlowField(float _cellRadius, Vector2Int _gridSize)
         {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                Vector3 worldPos = new Vector3(cellDiameter * x + cellRadius, 0, cellDiameter * y + cellRadius);
-                grid[x, y] = new Cell(worldPos, new Vector2Int(x, y));
-            }
+            cellRadius = _cellRadius;
+            cellDiameter = cellRadius * 2f;
+            gridSize = _gridSize;
         }
-    }
 
-    public void CreateStaticCostField()
-    {
-        Vector3 cellHalfExtents = Vector3.one * (cellRadius-1);
-        int terrainMask = LayerMask.GetMask("obstacle", "way");
-        foreach (Cell curCell in grid)
+        public void CreateGrid()
         {
-            Collider[] obstacles = Physics.OverlapBox(curCell.worldPos, cellHalfExtents, Quaternion.identity, terrainMask);
-            foreach (Collider col in obstacles)
+            grid = new Cell[gridSize.x, gridSize.y];
+
+            for (int x = 0; x < gridSize.x; x++)
             {
-                if (col.gameObject.layer == 8)
+                for (int y = 0; y < gridSize.y; y++)
                 {
-
-                    //Debug.Log(curCell.staticCost);
-                    //curCell.staticCost = MAX_COST;
-                    StaticField(curCell, 2, 10, Multiply.Increase);
-                    curCell.staticCost = MAX_COST;
-                    continue;
-                }
-                if (col.gameObject.layer == 9)
-                {
-                    curCell.staticCost-=1;
-                    continue;
-                }
-            }
-        }
-    }
-
-    public void StaticField(Cell staticCell, int radius, int cost, Multiply multiplier)
-    {
-        Vector2Int startCell = new Vector2Int(Math.Max(0,(staticCell.gridIndex.x-radius)), Math.Max(0,(staticCell.gridIndex.y-radius)));
-        Vector2Int endCell = new Vector2Int(Math.Min((staticCell.gridIndex.x + radius),gridSize.x-1), Math.Min((staticCell.gridIndex.y + radius),gridSize.y-1));
-        //Debug.DrawLine()
-        Debug.Log(startCell + " " + endCell);
-        for (int x = startCell.x; x <= endCell.x; x++)
-        {
-            for (int y = startCell.y; y <= endCell.y; y++)
-            {
-                //if (staticCell.staticCost == short.MaxValue) continue;
-                if ((Math.Abs(x-staticCell.gridIndex.x) + Math.Abs(y-staticCell.gridIndex.y)) <= radius)
-                {
-                    grid[x, y].staticCost += cost * (int)multiplier;
-                    //Debug.Log(grid[x, y].staticCost.ToString() +" "+cost.ToString()+" "+ ((int)multiplier).ToString());
-                }
-            }
-        }
-    }
-    public void GateField(Cell gateCell)
-    {
-        GateCell = gateCell;
-
-        GateCell.staticCost = 0;
-        GateCell.cashCost = 0;
-
-        //Vector2Int MainPos = GateCell.gridIndex;
-
-        Queue<Cell> cellsToCheck = new Queue<Cell>();
-
-        cellsToCheck.Enqueue(GateCell);
-
-        while (cellsToCheck.Count > 0)
-        {
-            Cell cell = cellsToCheck.Dequeue();
-            List<Cell> neighbours = GetNeighborCells(cell.gridIndex, GridDirection.CardinalDirections);
-            //int cashCost = int.MaxValue;
-            foreach (Cell neighbour in neighbours)
-            {
-                if (neighbour.staticCost == MAX_COST) continue;
-                if (neighbour.staticCost + cell.cashCost < neighbour.cashCost)
-                {
-                    neighbour.cashCost = neighbour.staticCost + cell.cashCost;
-                    cellsToCheck.Enqueue (neighbour);
+                    Vector3 worldPos = new Vector3(cellDiameter * x + cellRadius, 0, cellDiameter * y + cellRadius);
+                    grid[x, y] = new Cell(worldPos, new Vector2Int(x, y));
                 }
             }
         }
 
-    }
-
-    public void CreateFlowField()
-    {
-        foreach (Cell curCell in grid)
+        public void CreateStaticCostField()
         {
-            bool nearWall = false;
-            List<Cell> curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.CardinalDirections);
-            foreach (Cell neighbour in curNeighbors)
+            Vector3 cellHalfExtents = Vector3.one * cellRadius;
+            int terrainMask = LayerMask.GetMask("obstacle", "way");
+            foreach (Cell curCell in grid)
             {
-                if (neighbour.staticCost == MAX_COST)
-                    nearWall = true;
-            }
-
-            if (!nearWall)
-                curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.AllDirections);
-            
-            int bestCost = curCell.cashCost;
-
-            foreach (Cell curNeighbor in curNeighbors)
-            {
-                if (curNeighbor.cashCost < bestCost)
+                Collider[] obstacles = Physics.OverlapBox(curCell.worldPos, cellHalfExtents, Quaternion.identity, terrainMask);
+                foreach (Collider col in obstacles)
                 {
-                    bestCost = curNeighbor.cashCost;
-                    curCell.bestDirection = GridDirection.GetDirectionFromV2I(curNeighbor.gridIndex - curCell.gridIndex);
-                    //Debug.Log(curCell.bestDirection.Vector);
+                    if (col.gameObject.layer == 8)
+                    {
 
+                        //Debug.Log(curCell.staticCost);
+                        //curCell.staticCost = MAX_COST;
+                        StaticField(curCell, 2, 10, Multiply.Increase);
+                        curCell.staticCost = MAX_COST;
+                        continue;
+                    }
+                    if (col.gameObject.layer == 9)
+                    {
+                        curCell.staticCost -= 1;
+                        continue;
+                    }
                 }
             }
         }
-    }
 
-    private List<Cell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)
-    {
-        List<Cell> neighborCells = new List<Cell>();
-
-        foreach (Vector2Int curDirection in directions)
+        public void StaticField(Cell staticCell, int radius, int cost, Multiply multiplier)
         {
-            Cell newNeighbor = GetCellAtRelativePos(nodeIndex, curDirection);
-            if (newNeighbor != null)
+            Vector2Int startCell = new Vector2Int(Math.Max(0, (staticCell.gridIndex.x - radius)), Math.Max(0, (staticCell.gridIndex.y - radius)));
+            Vector2Int endCell = new Vector2Int(Math.Min((staticCell.gridIndex.x + radius), gridSize.x - 1), Math.Min((staticCell.gridIndex.y + radius), gridSize.y - 1));
+            //Debug.DrawLine()
+            Debug.Log(startCell + " " + endCell);
+            for (int x = startCell.x; x <= endCell.x; x++)
             {
-                neighborCells.Add(newNeighbor);
+                for (int y = startCell.y; y <= endCell.y; y++)
+                {
+                    //if (staticCell.staticCost == short.MaxValue) continue;
+                    if ((Math.Abs(x - staticCell.gridIndex.x) + Math.Abs(y - staticCell.gridIndex.y)) <= radius)
+                    {
+                        grid[x, y].staticCost += cost * (int)multiplier;
+                        //Debug.Log(grid[x, y].staticCost.ToString() +" "+cost.ToString()+" "+ ((int)multiplier).ToString());
+                    }
+                }
             }
         }
-        return neighborCells;
-    }
-
-    private Cell GetCellAtRelativePos(Vector2Int orignPos, Vector2Int relativePos)
-    {
-        Vector2Int finalPos = orignPos + relativePos;
-
-        if (finalPos.x < 0 || finalPos.x >= gridSize.x || finalPos.y < 0 || finalPos.y >= gridSize.y)
+        public void GateField(Cell gateCell)
         {
-            return null;
+            GateCell = gateCell;
+
+            GateCell.staticCost = 0;
+            GateCell.cashCost = 0;
+
+            //Vector2Int MainPos = GateCell.gridIndex;
+
+            Queue<Cell> cellsToCheck = new Queue<Cell>();
+
+            cellsToCheck.Enqueue(GateCell);
+
+            while (cellsToCheck.Count > 0)
+            {
+                Cell cell = cellsToCheck.Dequeue();
+                List<Cell> neighbours = GetNeighborCells(cell.gridIndex, GridDirection.CardinalDirections);
+                //int cashCost = int.MaxValue;
+                foreach (Cell neighbour in neighbours)
+                {
+                    if (neighbour.staticCost == MAX_COST) continue;
+                    if (neighbour.staticCost + cell.cashCost < neighbour.cashCost)
+                    {
+                        neighbour.cashCost = neighbour.staticCost + cell.cashCost;
+                        cellsToCheck.Enqueue(neighbour);
+                    }
+                }
+            }
+
         }
 
-        else { return grid[finalPos.x, finalPos.y]; }
-    }
+        public void CreateFlowField()
+        {
+            foreach (Cell curCell in grid)
+            {
+                bool nearWall = false;
+                List<Cell> curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.CardinalDirections);
+                foreach (Cell neighbour in curNeighbors)
+                {
+                    if (neighbour.staticCost == MAX_COST)
+                        nearWall = true;
+                }
 
-    public Cell GetCellFromWorldPos(Vector3 worldPos)
-    {
-        float percentX = worldPos.x / (gridSize.x * cellDiameter);
-        float percentY = worldPos.z / (gridSize.y * cellDiameter);
+                if (!nearWall)
+                    curNeighbors = GetNeighborCells(curCell.gridIndex, GridDirection.AllDirections);
 
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
+                int bestCost = curCell.cashCost;
 
-        int x = Mathf.Clamp(Mathf.FloorToInt((gridSize.x) * percentX), 0, gridSize.x - 1);
-        int y = Mathf.Clamp(Mathf.FloorToInt((gridSize.y) * percentY), 0, gridSize.y - 1);
-        return grid[x, y];
-    }
-    public enum Multiply
-    { 
-    Decrease = -1,
-    Increase = 1
+                foreach (Cell curNeighbor in curNeighbors)
+                {
+                    if (curNeighbor.cashCost < bestCost)
+                    {
+                        bestCost = curNeighbor.cashCost;
+                        curCell.bestDirection = GridDirection.GetDirectionFromV2I(curNeighbor.gridIndex - curCell.gridIndex);
+                        //Debug.Log(curCell.bestDirection.Vector);
+
+                    }
+                }
+            }
+        }
+
+        private List<Cell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)
+        {
+            List<Cell> neighborCells = new List<Cell>();
+
+            foreach (Vector2Int curDirection in directions)
+            {
+                Cell newNeighbor = GetCellAtRelativePos(nodeIndex, curDirection);
+                if (newNeighbor != null)
+                {
+                    neighborCells.Add(newNeighbor);
+                }
+            }
+            return neighborCells;
+        }
+
+        private Cell GetCellAtRelativePos(Vector2Int orignPos, Vector2Int relativePos)
+        {
+            Vector2Int finalPos = orignPos + relativePos;
+
+            if (finalPos.x < 0 || finalPos.x >= gridSize.x || finalPos.y < 0 || finalPos.y >= gridSize.y)
+            {
+                return null;
+            }
+
+            else { return grid[finalPos.x, finalPos.y]; }
+        }
+
+        public Cell GetCellFromWorldPos(Vector3 worldPos)
+        {
+            float percentX = worldPos.x / (gridSize.x * cellDiameter);
+            float percentY = worldPos.z / (gridSize.y * cellDiameter);
+
+            percentX = Mathf.Clamp01(percentX);
+            percentY = Mathf.Clamp01(percentY);
+
+            int x = Mathf.Clamp(Mathf.FloorToInt((gridSize.x) * percentX), 0, gridSize.x - 1);
+            int y = Mathf.Clamp(Mathf.FloorToInt((gridSize.y) * percentY), 0, gridSize.y - 1);
+            return grid[x, y];
+        }
+        public enum Multiply
+        {
+            Decrease = -1,
+            Increase = 1
+        }
     }
 }
