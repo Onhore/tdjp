@@ -12,10 +12,19 @@ namespace BuildSystem
         [SerializeField] private Element Base;
         [SerializeField] private Element Top;
         
-        [SerializeField] private int size = 5;
+        [SerializeField] private int maxSize = 5;
+
+        public int Size => elements.Count;
+
+        private BoxCollider _collider;
+
+        void Awake()
+        {
+            _collider = GetComponent<BoxCollider>();
+        }
         void Start()
         {
-            
+        
         }
 
         // Update is called once per frame
@@ -30,26 +39,19 @@ namespace BuildSystem
         }
         public override void Build(Vector3 position)
         {
-            if (Base == null)
-            {
-                Debug.LogError("Base is null.");
-                return;
-            }
-            transform.position = position;
-            Base = Instantiate(Base, transform);
-            Base.transform.position = transform.position;
-            elements.Add(Base);
-        }
-        public virtual void Build(Vector3 position, Base b)
-        {
-            transform.position = position;
-            Base = Instantiate(b, transform);
-            Base.transform.position = transform.position;
-            //AddElement(b);
+            //if (Base == null)
+            //{
+            //    Debug.LogError("Base is null.");
+            //    return;
+            //}
+            //transform.position = position;
+            //Base = Instantiate(Base, transform);
+            //Base.transform.position = transform.position;
+            //elements.Add(Base);
         }
         public void AddElement(Element prefab)
         {
-            if (size <= elements.Count) return;
+            if (maxSize <= elements.Count) return;
             Vector3 position = Top == null ? Vector3.zero : Top.transform.localPosition + Top.nextElementPivot;
             //Debug.Log("Добавить элемент " + prefab + " " + position);
             Element element = Instantiate(prefab, transform);
@@ -60,6 +62,11 @@ namespace BuildSystem
                 Base = element;
             Top = element;
             health += element.Health;
+            // Increase collider
+            _collider.size = new Vector3(_collider.size.x, _collider.size.y + element.nextElementPivot.y, _collider.size.z);
+            _collider.center = new Vector3(_collider.center.x, _collider.size.y / 2, _collider.center.z);
+
+            element.Build();
         }
         /*public void RemoveElement(Element prefab)
         {

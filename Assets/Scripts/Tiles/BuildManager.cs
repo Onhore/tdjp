@@ -17,7 +17,7 @@ public class BuildManager : MonoBehaviour
     [SerializeField] private Element WindowPrefab;
     [SerializeField] private Element TopPrefab;
     [SerializeField] private LayerMask GroundLayer;
-
+    
     #region Singleton
     private static BuildManager _instance;
     public static BuildManager Instance
@@ -92,7 +92,6 @@ public class BuildManager : MonoBehaviour
     {
         if (GridController.Instance.grid.IsCellOccupied(cell))
         {
-            Debug.Log("ааа");
             BuildElement(cell, prefab);
         }
         else if (GridController.Instance.grid.IsCellEmpty(cell))

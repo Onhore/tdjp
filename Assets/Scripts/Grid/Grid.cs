@@ -84,7 +84,6 @@ namespace GridSystem
         }
         public Collider[] GetCollides(Cell cell, LayerMask layerMask)
         {
-            
             Vector3 cellHalfExtents = Vector3.one * (cellRadius-0.01f);
             Vector3 position = cell.WorldPos + new Vector3(0, cellDiameter, 0);
             Collider[] collides = Physics.OverlapBox(position, cellHalfExtents, Quaternion.identity, layerMask);

@@ -11,6 +11,7 @@ public class GridDebug : MonoBehaviour
     public Cell target;
     public Tower Tower;
     public LayerMask groundLayer;
+    //public Color GridColor = Color.grey;
     private void Update()
     {
         //BuildManager.Instance.Test();
@@ -21,7 +22,7 @@ public class GridDebug : MonoBehaviour
             if (Physics.Raycast(position, out var hitInfo, 200, groundLayer) && hitInfo.transform.gameObject.layer == 10)
             {
                 target = gridController.grid.GetCellFromWorldPos(hitInfo.point);
-                Debug.Log(gridController.grid.IsCellOccupied(target));
+                //Debug.Log(gridController.grid.IsCellOccupied(target));
                 
                 
             }
@@ -30,8 +31,9 @@ public class GridDebug : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (gridController == null) return;
-        if (displayGrid) DrawGrid(gridController.gridSize, Color.magenta, gridController.cellRadius);
+        if (displayGrid) DrawGrid(gridController.gridSize, Color.gray, gridController.cellRadius);
         if (target != null) DrawCell(target, Color.green, gridController.cellRadius);
+        
     }
     private void DrawGrid(Vector2Int drawGridSize, Color drawColor, float drawCellRadius)
     {

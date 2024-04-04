@@ -9,9 +9,10 @@ namespace BuildSystem
         [SerializeField] protected int health;
         public int Health => health;
         public Vector3 nextElementPivot;
-        public virtual void Interact()
-        {
 
-        }
+        public virtual void Build()
+        {}
+        public virtual void Interact()
+        {}
     }
 }
