@@ -10,6 +10,8 @@ public class UnitController : MonoBehaviour
     public int numUnitsPerSpawn;
     public float moveSpeed;
 
+    public int count = 0;
+
     private List<GameObject> unitsInGame;
 
     private void Awake()
@@ -21,7 +23,21 @@ public class UnitController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SpawnUnits();
+            count += 12;
+            
+            SpawnUnit(Spawner.transform.position);
+            SpawnUnit(Spawner.transform.position+new Vector3(0,0,3));
+            SpawnUnit(Spawner.transform.position+new Vector3(0,0,-3));
+            SpawnUnit(Spawner.transform.position+new Vector3(3,3));
+            SpawnUnit(Spawner.transform.position+new Vector3(3,0,-3));
+            SpawnUnit(Spawner.transform.position+new Vector3(3,0,0));
+
+            SpawnUnit(Spawner.transform.position + new Vector3(0,0,5));
+            SpawnUnit(Spawner.transform.position+new Vector3(0,0,3) + new Vector3(0,0,5));
+            SpawnUnit(Spawner.transform.position+new Vector3(0,0,-3) + new Vector3(0,0,5));
+            SpawnUnit(Spawner.transform.position+new Vector3(3,0,3) + new Vector3(0,0,5));
+            SpawnUnit(Spawner.transform.position+new Vector3(3,0,-3) + new Vector3(0,0,5));
+            SpawnUnit(Spawner.transform.position+new Vector3(3,0,0) + new Vector3(0,0,5));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -43,11 +59,11 @@ public class UnitController : MonoBehaviour
         }//
     }   
 
-    private void SpawnUnits()
+    private void SpawnUnit(Vector3 position)
     {
         GameObject newUnit1 = Instantiate(unitPrefab);
         newUnit1.transform.parent = transform;
-        newUnit1.transform.position = Spawner.transform.position;
+        newUnit1.transform.position = position;
         newUnit1.GetComponent<Goblin>().GridController = gridController;
         unitsInGame.Add(newUnit1);
         //

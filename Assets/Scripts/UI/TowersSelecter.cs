@@ -14,7 +14,7 @@ public class TowersSelecter : MonoBehaviour
         BuildSelect result;
         if (Enum.TryParse<BuildSelect>(str, true, out result))
         {
-            if (BuildManager.Instance.Select == BuildSelect.Null)
+            if (BuildManager.Instance.Select != result)
                 BuildManager.Instance.Select = result;
             else
                 BuildManager.Instance.Select = BuildSelect.Null;

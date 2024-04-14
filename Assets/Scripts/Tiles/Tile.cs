@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BuildSystem
 {
-    public abstract class Tile : MonoBehaviour
+    public abstract class Tile : MonoBehaviour, IDamagable
     {
         [SerializeField] protected int health;
         public int Health => health;
@@ -13,13 +13,13 @@ namespace BuildSystem
         {
 
         }
-        public virtual void GetDamage(int inDamage)
+        public virtual void GetDamage(int damage)
         {
 
         }
-        protected virtual void Destroy()
+        protected virtual void Death()
         {
-
+            Destroy(gameObject);
         }
 
     }

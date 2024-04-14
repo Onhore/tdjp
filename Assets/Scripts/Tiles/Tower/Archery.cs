@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using OpenCover.Framework.Model;
 using Unity.VisualScripting;
 using UnityEngine;
+
 namespace BuildSystem
 {
     public class Archery : Top
@@ -20,16 +22,28 @@ namespace BuildSystem
         private float coefficient => transform.localPosition.y*Coefficient;
         [SerializeField] private LayerMask EnemyMask;
 
+        [SerializeField] private float cooldown;
+        [SerializeField] private int damage;
+        private float lastTimeCasted;
+        private Collider[] collides;
 
-
-        private bool debugField = false;
+        private bool hasEnemies = false;
         public override void Interact()
         {
             base.Interact();
-            debugField = GetCollides(EnemyMask).Length != 0;
-            
+            collides = GetCollides(EnemyMask);
+            hasEnemies = collides.Length != 0;
+
+            //CastAbility();
+            UnityExtensions.Cooldowned(hasEnemies, new UnityExtensions.CooldownMethod(Hit), cooldown, ref lastTimeCasted);
         }
 
+        private void Hit()
+        {
+            collides.First().GetComponent<IDamagable>().GetDamage(damage);
+            GetComponent<AudioSource>().Play();
+            Debug.DrawLine(transform.position+nextElementPivot, collides.First().transform.position, Color.red, 1);
+        }
         public Collider[] GetCollides(LayerMask layerMask)
         {
             
@@ -45,8 +59,8 @@ namespace BuildSystem
         // Debug
         private void OnDrawGizmos()
         {
-            GizmoAdditions.DrawCapsule(transform.parent.position, transform.position + new Vector3(0,height,0), radius, debugField? Color.green: Color.blue);
-            GizmoAdditions.DrawCapsule(transform.parent.position, transform.parent.position + new Vector3(0,blindHeight,0), blindRadius, Color.red);
+            //GizmoAdditions.DrawCapsule(transform.parent.position, transform.position + new Vector3(0,height,0), radius, hasEnemies? Color.green: Color.blue);
+            //GizmoAdditions.DrawCapsule(transform.parent.position, transform.parent.position + new Vector3(0,blindHeight,0), blindRadius, Color.red);
         }
            
     }

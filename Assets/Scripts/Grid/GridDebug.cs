@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using GridSystem;
 using BuildSystem;
+using UnityEngine.EventSystems;
+using UnityEngine.Analytics;
+using Unity.VisualScripting;
 
 public class GridDebug : MonoBehaviour
 {
@@ -15,7 +18,7 @@ public class GridDebug : MonoBehaviour
     private void Update()
     {
         //BuildManager.Instance.Test();
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             //LayerMask layer = LayerMask.GetMask("UI");
             Ray position = Camera.main.ScreenPointToRay(Input.mousePosition);

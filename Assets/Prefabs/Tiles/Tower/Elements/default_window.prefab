@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce4afc47f5969d4985e8a752bd0872e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 100
   nextElementPivot: {x: 0, y: 2, z: 0}
 --- !u!1001 &4114902993282051889
 PrefabInstance:

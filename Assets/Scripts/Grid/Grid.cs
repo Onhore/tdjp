@@ -35,7 +35,7 @@ namespace GridSystem
                 }
             }
         }
-        private List<Cell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)
+        public List<Cell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)
         {
             List<Cell> neighborCells = new List<Cell>();
 
@@ -50,7 +50,7 @@ namespace GridSystem
             return neighborCells;
         }
 
-        private Cell GetCellAtRelativePos(Vector2Int orignPos, Vector2Int relativePos)
+        public Cell GetCellAtRelativePos(Vector2Int orignPos, Vector2Int relativePos)
         {
             Vector2Int finalPos = orignPos + relativePos;
 
@@ -93,5 +93,16 @@ namespace GridSystem
         
         //public bool IsCellOccupied(Cell cell) => cell.Tile == null ? false : cell.Tile.GetType().IsAssignableFrom(typeof(Tower));
         public bool IsCellOccupied(Cell cell) => cell.Tile == null ? false : (cell.Tile is Tower);
+        public bool IsCellPosition(Vector3 position)
+        {
+            
+            return false;
+        }
+
+        public Cell this[int x, int y]
+        {
+            get => grid[x,y];
+            set => grid[x,y] = value;
+        }
     }
 }

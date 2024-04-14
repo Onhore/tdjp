@@ -5,6 +5,7 @@ using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using Unity.VisualScripting;
 using UnityEngine;
 using GridSystem;
+using UnityEngine.EventSystems;
 
 namespace BuildSystem
 {
@@ -42,7 +43,7 @@ public class BuildManager : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Select != BuildSelect.Null)
+        if (Input.GetMouseButtonDown(0) && Select != BuildSelect.Null && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray position = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(position, out var hitInfo, 200, GroundLayer) && hitInfo.transform.gameObject.layer == 10)
@@ -62,7 +63,7 @@ public class BuildManager : MonoBehaviour
                         TryBuildElement(cell, TopPrefab);
                         break;
             }
-            Select = BuildSelect.Null;
+            //Select = BuildSelect.Null;
         }
         }
     }
@@ -87,6 +88,7 @@ public class BuildManager : MonoBehaviour
         GameObject tower = Instantiate(TowerPrefab, cell.WorldPos, Quaternion.identity, transform);
         tower.GetComponent<Tower>().AddElement(BasePrefab);
         cell.Tile = tower.GetComponent<Tower>();
+        GridController.Instance.GetComponent<FlowFieldController>().Init();
     }
     public void TryBuildElement(Cell cell, Element prefab)
     {

@@ -8,9 +8,7 @@ public class FlowFieldDebug : MonoBehaviour
 {
     public FlowFieldController gridController;
     public bool displayGrid;
-
     public FlowFieldDisplayType curDisplayType;
-
     private Vector2Int gridSize;
     private float cellRadius;
     private FlowField curFlowField;
@@ -19,7 +17,7 @@ public class FlowFieldDebug : MonoBehaviour
 
     private void Start()
     {
-        ffIcons = Resources.LoadAll<Sprite>("FFicons");
+        ffIcons = Resources.LoadAll<Sprite>("DebugIcons");
     }
 
     public void SetFlowField(FlowField newFlowField)
@@ -50,7 +48,7 @@ public class FlowFieldDebug : MonoBehaviour
     private void DisplayAllCells()
     {
         if (curFlowField == null) { return; }
-        foreach (Cell curCell in curFlowField.grid)
+        foreach (FlowCell curCell in curFlowField.flowGrid)
         {
             DisplayCell(curCell);
         }
@@ -62,12 +60,12 @@ public class FlowFieldDebug : MonoBehaviour
         DisplayCell(curFlowField.GateCell);  
     }
 
-    private void DisplayCell(Cell cell)
+    private void DisplayCell(FlowCell cell)
     {
         GameObject iconGO = new GameObject();
         SpriteRenderer iconSR = iconGO.AddComponent<SpriteRenderer>();
         iconGO.transform.parent = transform;
-        iconGO.transform.position = cell.worldPos;
+        iconGO.transform.position = cell.WorldPos;
 
         if (cell.Cost == 0)
         {
@@ -145,17 +143,17 @@ public class FlowFieldDebug : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (displayGrid)
-        {
-            if (curFlowField == null)
-            {
-                DrawGrid(gridController.gridSize, Color.yellow, gridController.cellRadius);
-            }
-            else
-            {
-                DrawGrid(gridSize, Color.green, cellRadius);
-            }
-        }
+        // if (displayGrid)
+        // {
+        //     if (curFlowField == null)
+        //     {
+        //         DrawGrid(gridController.gridSize, Color.yellow, gridController.cellRadius);
+        //     }
+        //     else
+        //     {
+        //         DrawGrid(gridSize, Color.green, cellRadius);
+        //     }
+        // }
 
         if (curFlowField == null) { return; }
 
@@ -166,24 +164,24 @@ public class FlowFieldDebug : MonoBehaviour
         {
             case FlowFieldDisplayType.CostField:
 
-                foreach (Cell curCell in curFlowField.grid)
+                foreach (FlowCell curCell in curFlowField.flowGrid)
                 {
-                    Handles.Label(curCell.worldPos, curCell.staticCost.ToString(), style);
+                    Handles.Label(curCell.WorldPos, curCell.staticCost.ToString(), style);
                     
                 }
                 break;
 
             case FlowFieldDisplayType.IntegrationField:
 
-                foreach (Cell curCell in curFlowField.grid)
+                foreach (FlowCell curCell in curFlowField.flowGrid)
                 {
-                    Handles.Label(curCell.worldPos, curCell.cashCost.ToString(), style);
+                    Handles.Label(curCell.WorldPos, curCell.cashCost.ToString(), style);
                 }
                 break;
             case FlowFieldDisplayType.Indexes:
-                foreach (Cell curCell in curFlowField.grid)
+                foreach (FlowCell curCell in curFlowField.flowGrid)
                 {
-                    Handles.Label(curCell.worldPos, curCell.gridIndex.ToString(), style);
+                    Handles.Label(curCell.WorldPos, curCell.GridIndex.ToString(), style);
                 }
                 break;
             default:

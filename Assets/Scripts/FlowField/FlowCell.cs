@@ -1,10 +1,9 @@
 using UnityEngine;
 namespace GridSystem.Flowfields
 {
-    public class Cell
+    public class FlowCell
     {
-        public Vector3 worldPos;
-        public Vector2Int gridIndex;
+        public GridSystem.Cell cell;
         public int staticCost
         {
             set
@@ -35,17 +34,17 @@ namespace GridSystem.Flowfields
                 return _cashCost;
             }
         }
-
+        public Vector3 WorldPos => cell.WorldPos;
+        public Vector2Int GridIndex => cell.GridIndex;
         //public int bestCost;
         public GridDirection bestDirection;
 
         private int _staticCost;
         private int _cashCost;
 
-        public Cell(Vector3 _worldPos, Vector2Int _gridIndex, int defaultCost = 10)
+        public FlowCell(GridSystem.Cell _cell, Vector2Int _gridIndex, int defaultCost = 10)
         {
-            worldPos = _worldPos;
-            gridIndex = _gridIndex;
+            cell = _cell;
             staticCost = defaultCost;
             _cashCost = FlowField.MAX_COST;
             bestDirection = GridDirection.None;

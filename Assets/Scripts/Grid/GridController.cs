@@ -32,6 +32,7 @@ public class GridController : MonoBehaviour
     private void Start()
     {
         InitializeGrid();
+        GetComponent<FlowFieldController>().Init();
     }
     private void Update()
     {

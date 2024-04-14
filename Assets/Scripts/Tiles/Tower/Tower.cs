@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Xml.Linq;
 using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 using UnityEngine;
@@ -14,6 +13,8 @@ namespace BuildSystem
         
         [SerializeField] private int maxSize = 5;
 
+        [SerializeField] private LayerMask enemyLayer;
+        
         public int Size => elements.Count;
 
         private BoxCollider _collider;
@@ -35,6 +36,15 @@ namespace BuildSystem
                 element.Interact();
                 //element.transform.position = transform.position;
                 
+            }
+        }
+        public override void GetDamage(int inDamage)
+        { 
+            health -= inDamage;
+            //Debug.Log("Tower: " + health);
+            if (health <= 0) 
+            {
+                //Destroy(gameObject);
             }
         }
         public override void Build(Vector3 position)
@@ -73,5 +83,6 @@ namespace BuildSystem
             elements.Remove(element);
             health -= element.Health;
         }*/
+        
     }
 }
