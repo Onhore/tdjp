@@ -16,33 +16,25 @@ public class Goblin : Entity
     private Vector3 direction;
     private GameObject target;
 
-    public AudioSource deathSound;
-
     protected override void Move(Vector2 direction)
     {
-        rb.AddForce(new Vector3(direction.x, 0 ,direction.y) * speed, ForceMode.Force);
-        //transform.position = Vector3.SmoothDamp(transform.position, transform.position + Vector3.Scale(transform.forward.normalized, (Vector3.forward + Vector3.right)) * speed, ref velocity, smoothTimeMovement);
+        //rb.AddForce(new Vector3(direction.x, 0 ,direction.y) * speed, ForceMode.Force);
+        transform.position = Vector3.SmoothDamp(transform.position, transform.position + Vector3.Scale(transform.forward.normalized, (Vector3.forward + Vector3.right)) * speed, ref velocity, smoothTimeMovement);
         
         //rb.velocity += new Vector3(direction.x, 0, direction.y) * speed;
         //transform.LookAt(transform.position + new Vector3(direction.x, 0, direction.y));
         
         FaceTo(direction);
     }
-    public override void GetDamage(int inDamage)
-    {
-        if (deathSound!=null)
-            deathSound.Play();
-        health -= damage;
-        //Debug.Log("goblin: " + health);
-        if (health <= 0) 
-        {
-            Death();
-        }
-    }
     
     protected void Hit(GameObject enemy)
     {
-        enemy.GetComponent<IDamagable>().GetDamage(damage);
+        enemy.GetComponent<IDamagable>().Damage(damage);
+    }
+    public override void Death()
+    {
+        base.Death();
+        PlayerStats.Gold.Score += 10; 
     }
     private void Test(int a)
     {}

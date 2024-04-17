@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 1840466110779792829}
   - component: {fileID: 5674626597132249162}
   - component: {fileID: 4400149044057407024}
+  - component: {fileID: 7321712088734654238}
   m_Layer: 6
   m_Name: goblintest 2
   m_TagString: Untagged
@@ -309,8 +310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c1ee6fc07d6d043ab163a3839a7007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
-  speed: 10
+  health: {fileID: 7321712088734654238}
+  speed: 3
   damage: 1
   GridController: {fileID: 0}
   rb: {fileID: 1840466110779792829}
@@ -319,4 +320,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   cooldownAttack: 3
-  deathSound: {fileID: 5123540704946725210}
+--- !u!114 &7321712088734654238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5014208179401364884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b311ee6c16e794ca3af9bc628337d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initial: 16
+  OnDie:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4400149044057407024}
+        m_TargetAssemblyTypeName: Goblin, Assembly-CSharp
+        m_MethodName: Death
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

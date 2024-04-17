@@ -12,7 +12,8 @@ namespace BuildSystem
         public Vector3 nextElementPivot;
 
         //protected delegate void DelayMethod();
-        
+        [SerializeField] private bool isInteractive;
+        public bool IsInteractive => isInteractive;
 
         public virtual void Build()
         {}

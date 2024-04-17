@@ -4,20 +4,15 @@ using UnityEngine;
 
 namespace BuildSystem
 {
-    public abstract class Tile : MonoBehaviour, IDamagable
+    public abstract class Tile : MonoBehaviour
     {
-        [SerializeField] protected int health;
-        public int Health => health;
+        [SerializeField] public Health health;
 
         public virtual void Build(Vector3 position)
         {
 
         }
-        public virtual void GetDamage(int damage)
-        {
-
-        }
-        protected virtual void Death()
+        public virtual void Death()
         {
             Destroy(gameObject);
         }

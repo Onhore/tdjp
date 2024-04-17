@@ -28,6 +28,7 @@ namespace BuildSystem
         private Collider[] collides;
 
         private bool hasEnemies = false;
+
         public override void Interact()
         {
             base.Interact();
@@ -40,7 +41,7 @@ namespace BuildSystem
 
         private void Hit()
         {
-            collides.First().GetComponent<IDamagable>().GetDamage(damage);
+            collides.First().GetComponent<IDamagable>().Damage(damage);
             GetComponent<AudioSource>().Play();
             Debug.DrawLine(transform.position+nextElementPivot, collides.First().transform.position, Color.red, 1);
         }

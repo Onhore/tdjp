@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 using UnityEngine;
+using UnityEngine.Events;
+using System;
 namespace BuildSystem
 {
     public class Tower : Tile
@@ -14,14 +14,21 @@ namespace BuildSystem
         [SerializeField] private int maxSize = 5;
 
         [SerializeField] private LayerMask enemyLayer;
+
+        public Vector3 TopPosition => Top == null ? Vector3.zero : Top.transform.localPosition + Top.nextElementPivot;
         
         public int Size => elements.Count;
 
         private BoxCollider _collider;
 
+        public Action OnInteract;
+
+        [SerializeField] UnityEvent OnAddElement;
+
         void Awake()
         {
             _collider = GetComponent<BoxCollider>();
+            
         }
         void Start()
         {
@@ -31,21 +38,19 @@ namespace BuildSystem
         // Update is called once per frame
         void Update()
         {
-            foreach (Element element in elements)
-            {
-                element.Interact();
-                //element.transform.position = transform.position;
-                
-            }
+            // foreach (Element element in elements)
+            // {
+            //     element.Interact();
+            //     //element.transform.position = transform.position;
+            // }
+            OnInteract?.Invoke();
         }
-        public override void GetDamage(int inDamage)
-        { 
-            health -= inDamage;
-            //Debug.Log("Tower: " + health);
-            if (health <= 0) 
-            {
-                //Destroy(gameObject);
-            }
+        
+        public override void Death()
+        {
+            GridController.Instance.grid.GetCellFromWorldPos(transform.position).Tile = null;
+            GridController.Instance.UpdateStaticFields();
+            base.Death();
         }
         public override void Build(Vector3 position)
         {
@@ -71,12 +76,18 @@ namespace BuildSystem
             if (Base == null)
                 Base = element;
             Top = element;
-            health += element.Health;
+            health.Initial += element.Health;
+            health.Current += element.Health;
+
+            if(element.IsInteractive)
+                OnInteract += element.Interact;
+
             // Increase collider
             _collider.size = new Vector3(_collider.size.x, _collider.size.y + element.nextElementPivot.y, _collider.size.z);
             _collider.center = new Vector3(_collider.center.x, _collider.size.y / 2, _collider.center.z);
 
             element.Build();
+            OnAddElement.Invoke();
         }
         /*public void RemoveElement(Element prefab)
         {

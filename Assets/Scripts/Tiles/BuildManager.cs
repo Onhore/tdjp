@@ -88,7 +88,7 @@ public class BuildManager : MonoBehaviour
         GameObject tower = Instantiate(TowerPrefab, cell.WorldPos, Quaternion.identity, transform);
         tower.GetComponent<Tower>().AddElement(BasePrefab);
         cell.Tile = tower.GetComponent<Tower>();
-        GridController.Instance.GetComponent<FlowFieldController>().Init();
+        GridController.Instance.UpdateStaticFields();
     }
     public void TryBuildElement(Cell cell, Element prefab)
     {

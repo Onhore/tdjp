@@ -73,7 +73,7 @@ public class FlowFieldDebug : MonoBehaviour
             Quaternion newRot = Quaternion.Euler(90, 0, 0);
             iconGO.transform.rotation = newRot;
         }
-        else if (cell.Cost == byte.MaxValue)
+        else if (cell.Cost == FlowField.MAX_COST)
         {
             iconSR.sprite = ffIcons[2];
             Quaternion newRot = Quaternion.Euler(90, 0, 0);
@@ -175,7 +175,7 @@ public class FlowFieldDebug : MonoBehaviour
 
                 foreach (FlowCell curCell in curFlowField.flowGrid)
                 {
-                    Handles.Label(curCell.WorldPos, curCell.cashCost.ToString(), style);
+                    Handles.Label(curCell.WorldPos, curCell.Cost.ToString(), style);
                 }
                 break;
             case FlowFieldDisplayType.Indexes:

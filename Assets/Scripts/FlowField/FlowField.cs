@@ -41,6 +41,16 @@ namespace GridSystem.Flowfields
                 }
             }
         }
+        public void EmptyField()
+        {
+            foreach (FlowCell cell in flowGrid)
+            {
+                cell.staticCost = 10;
+                cell.cashCost = -1;
+                cell.bestDirection = GridDirection.None;
+                cell.gateCost = MAX_COST;
+            }
+        }
 
         public void CreateStaticCostField()
         {
@@ -62,7 +72,7 @@ namespace GridSystem.Flowfields
                     }
                     if (col.gameObject.layer == 9)
                     {
-                        curCell.staticCost -= 1;
+                        curCell.staticCost = 5;
                         continue;
                     }
                 }
@@ -107,7 +117,7 @@ namespace GridSystem.Flowfields
             GateCell = gateCell;
 
             GateCell.staticCost = 0;
-            GateCell.cashCost = 0;
+            GateCell.gateCost = 0;
 
             //Vector2Int MainPos = GateCell.gridIndex;
 
@@ -123,9 +133,9 @@ namespace GridSystem.Flowfields
                 foreach (FlowCell neighbour in neighbours)
                 {
                     if (neighbour.staticCost == MAX_COST) continue;
-                    if (neighbour.staticCost + cell.cashCost < neighbour.cashCost)
+                    if (neighbour.staticCost + cell.gateCost < neighbour.gateCost)
                     {
-                        neighbour.cashCost = neighbour.staticCost + cell.cashCost;
+                        neighbour.gateCost = neighbour.staticCost + cell.gateCost;
                         cellsToCheck.Enqueue(neighbour);
                     }
                 }
@@ -143,15 +153,15 @@ namespace GridSystem.Flowfields
                 for (int y = startCell.y; y <= endCell.y; y++)
                 {
                     //if (staticCell.staticCost == short.MaxValue) continue;
-                    if ((Math.Abs(x - radiusCell.GridIndex.x) + Math.Abs(y - radiusCell.GridIndex.y)) <= radius)
+                    if ((Math.Abs(x - radiusCell.GridIndex.x) + Math.Abs(y - radiusCell.GridIndex.y)) <= radius && flowGrid[x, y].cashCost<0)
                     {
-                        flowGrid[x, y].cashCost = MAX_COST;;
+                        flowGrid[x, y].cashCost = MAX_COST;
                         //Debug.Log(grid[x, y].staticCost.ToString() +" "+cost.ToString()+" "+ ((int)multiplier).ToString());
                     }
                 }
             }
 
-            radiusCell.staticCost = 0;
+            //radiusCell.staticCost = 0;
             radiusCell.cashCost = 0;
 
             Queue<FlowCell> cellsToCheck = new Queue<FlowCell>();
@@ -191,13 +201,13 @@ namespace GridSystem.Flowfields
                 if (!nearWall)
                     curNeighbors = GetNeighborCells(curCell.GridIndex, GridDirection.AllDirections);
 
-                int bestCost = curCell.cashCost;
+                int bestCost = curCell.Cost;
 
                 foreach (FlowCell curNeighbor in curNeighbors)
                 {
-                    if (curNeighbor.cashCost < bestCost)
+                    if (curNeighbor.Cost < bestCost)
                     {
-                        bestCost = curNeighbor.cashCost;
+                        bestCost = curNeighbor.Cost;
                         curCell.bestDirection = GridDirection.GetDirectionFromV2I(curNeighbor.GridIndex - curCell.GridIndex);
                         //Debug.Log(curCell.bestDirection.Vector);
 
@@ -205,6 +215,35 @@ namespace GridSystem.Flowfields
                 }
             }
         }
+
+        public GridDirection GetDirection(FlowCell cell)
+        {
+            bool nearWall = false;
+                List<FlowCell> curNeighbors = GetNeighborCells(cell.GridIndex, GridDirection.AllDirections);
+                foreach (FlowCell neighbour in curNeighbors)
+                {
+                    if (neighbour.staticCost == MAX_COST)
+                        nearWall = true;
+                }
+
+                if (nearWall)
+                    curNeighbors = GetNeighborCells(cell.GridIndex, GridDirection.CardinalDirections);
+
+                int bestCost = cell.Cost;
+
+                foreach (FlowCell curNeighbor in curNeighbors)
+                {
+                    if (curNeighbor.Cost < bestCost)
+                    {
+                        bestCost = curNeighbor.Cost;
+                        cell.bestDirection = GridDirection.GetDirectionFromV2I(curNeighbor.GridIndex - cell.GridIndex);
+                        //Debug.Log(curCell.bestDirection.Vector);
+
+                    }
+                }
+                return cell.bestDirection;
+        }
+
         public List<FlowCell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)
         {
             List<FlowCell> neighborCells = new List<FlowCell>();

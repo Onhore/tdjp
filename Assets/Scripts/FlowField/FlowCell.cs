@@ -9,7 +9,7 @@ namespace GridSystem.Flowfields
             set
             {
                 if (value > FlowField.MAX_COST) _staticCost = FlowField.MAX_COST;
-                if (value < FlowField.MAX_COST) _cashCost = FlowField.MAX_COST;
+                //if (value < FlowField.MAX_COST) _staticCost = FlowField.MAX_COST;
                 if (value < 0) _staticCost = 0;
                 else _staticCost = value;
             }
@@ -19,19 +19,33 @@ namespace GridSystem.Flowfields
             }
         }
         public int dynamicCost { set; get; }
-        public int Cost { get { return staticCost + dynamicCost; } }
+        public int Cost { get { return cashCost < 0 ? gateCost : (cashCost < gateCost ? cashCost : gateCost); } }
         public int cashCost
         {
             set
             {
                 if (value > FlowField.MAX_COST) _cashCost = FlowField.MAX_COST;
-                if (value < FlowField.MAX_COST) _cashCost = FlowField.MAX_COST;
-                if (value < 0) _cashCost = 0;
+                //if (value < FlowField.MAX_COST) _cashCost = FlowField.MAX_COST;
+                //if (value < 0) _cashCost = 0;
                 else _cashCost = value;
             }
             get
             {
                 return _cashCost;
+            }
+        }
+        public int gateCost
+        {
+            set
+            {
+                if (value > FlowField.MAX_COST) _gateCost = FlowField.MAX_COST;
+                if (value < FlowField.MAX_COST) _gateCost = FlowField.MAX_COST;
+                if (value < 0) _gateCost = 0;
+                else _gateCost = value;
+            }
+            get
+            {
+                return _gateCost;
             }
         }
         public Vector3 WorldPos => cell.WorldPos;
@@ -41,14 +55,18 @@ namespace GridSystem.Flowfields
 
         private int _staticCost;
         private int _cashCost;
+        private int _gateCost;
 
         public FlowCell(GridSystem.Cell _cell, Vector2Int _gridIndex, int defaultCost = 10)
         {
             cell = _cell;
             staticCost = defaultCost;
-            _cashCost = FlowField.MAX_COST;
+            _cashCost = -1;
             bestDirection = GridDirection.None;
+            _gateCost = FlowField.MAX_COST;
         }
+
+
 
         /*public void IncreaseStaticCost(int value)
         {

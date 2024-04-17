@@ -44,4 +44,8 @@ public class GridController : MonoBehaviour
         grid = new GridSystem.Grid(cellRadius, gridSize);
         grid.CreateGrid();
     }
+    public void UpdateStaticFields()
+    {
+        GetComponent<FlowFieldController>().UpdateStaticFields();
+    }
 }

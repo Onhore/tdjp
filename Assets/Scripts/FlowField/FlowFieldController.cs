@@ -15,6 +15,7 @@ public class FlowFieldController : MonoBehaviour
     //public Dictionary<string, FlowField> Flowfields;
     public FlowFieldDebug gridDebug;
     public GameObject gate;
+    FlowCell destinationCell;
 
     private void InitializeFlowField()
     {
@@ -32,16 +33,18 @@ public class FlowFieldController : MonoBehaviour
         grid = GridController.Instance.grid;
         Debug.Log(grid.cellRadius + " " + GridController.Instance.grid.cellRadius);
         //Flowfields = new Dictionary<string, FlowField>();
+        
 
     }
     public void Init()
     {
+            
             InitializeFlowField();
             Debug.Log("Set GateField");
             //Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f);
             //Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
             Debug.Log(gate.transform.position+" "+ curFlowField.gridSize.x+" "+ curFlowField.gridSize.y);
-            FlowCell destinationCell = curFlowField.GetCellFromWorldPos(gate.transform.position);
+            destinationCell = curFlowField.GetCellFromWorldPos(gate.transform.position);
             curFlowField.GateField(destinationCell);
             curFlowField.CreateTowerField();
             Debug.Log("Done");
@@ -67,9 +70,14 @@ public class FlowFieldController : MonoBehaviour
         // }
     }
 
-    private void UpdateStaticFields()
+    public void UpdateStaticFields()
     {
-
+        curFlowField.EmptyField();
+        curFlowField.CreateStaticCostField();
+        curFlowField.GateField(destinationCell);
+        curFlowField.CreateTowerField();
+        curFlowField.CreateFlowField();
+        gridDebug.DrawFlowField();
     }
     private void UpdateDynamicFields()
     {
