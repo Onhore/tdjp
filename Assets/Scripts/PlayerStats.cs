@@ -7,7 +7,9 @@ using System;
 
 public class PlayerStats : MonoBehaviour
 {
-	public class PlayerState<T>
+    public static int Rounds;
+
+    public class PlayerState<T>
 	{
 		public T Score 
 		{
@@ -24,7 +26,7 @@ public class PlayerStats : MonoBehaviour
 		private TextMeshProUGUI Text;
 		private T score;
 
-		public PlayerState(T startScore, TextMeshProUGUI text)
+        public PlayerState(T startScore, TextMeshProUGUI text)
 		{ 
 			Text = text;
 			Score = startScore;

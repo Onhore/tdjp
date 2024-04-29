@@ -3808,6 +3808,7 @@ GameObject:
   - component: {fileID: 1024632137}
   - component: {fileID: 1024632136}
   - component: {fileID: 1024632141}
+  - component: {fileID: 1024632142}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -3886,6 +3887,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afa2544dd02be4478f0d66269e906f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverUI: {fileID: 0}
+  completeLevelUI: {fileID: 0}
 --- !u!4 &1024632140
 Transform:
   m_ObjectHideFlags: 0
@@ -3997,6 +4000,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1024632142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024632135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10bb95b15b17e874a8b7fcfce74c918f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - enemy: {fileID: 5014208179401364884, guid: c4fd62c416459604e8e77e9cf7cf4a9a, type: 3}
+    count: 1
+    rate: 2
+  - enemy: {fileID: 5014208179401364884, guid: c4fd62c416459604e8e77e9cf7cf4a9a, type: 3}
+    count: 20
+    rate: 2
+  spawnPoint: {fileID: 362527022}
+  timeBetweenWaves: 2
+  waveCountdownText: {fileID: 0}
+  gameManager: {fileID: 0}
+  gridController: {fileID: 958076685}
 --- !u!1001 &1053071371
 PrefabInstance:
   m_ObjectHideFlags: 0
