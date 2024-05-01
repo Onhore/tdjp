@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
         moveInputX = Vector3.Scale(Camera.transform.forward.normalized, Vector3.forward + Vector3.right) * Input.GetAxisRaw("Vertical");
         moveInputY = Vector3.Scale(Camera.transform.right.normalized, Vector3.forward + Vector3.right) * Input.GetAxisRaw("Horizontal");
         moveDirection = transform.position + (moveInputX + moveInputY).normalized * panSpeed;
-
+        Debug.Log(Input.GetAxis("Horizontal") + " " + Input.GetAxis("Vertical"));
         transform.position = Vector3.SmoothDamp(transform.position, moveDirection, ref velocity, smoothTimeMovement);
     }
     private void CameraRotate()
