@@ -31,18 +31,18 @@ public class FlyweightFactory : MonoBehaviour
     [SerializeField] int defaultCapacity = 10;
     [SerializeField] int maxPoolSize = 100;
 
-    readonly Dictionary<Type, IObjectPool<Flyweight>> pools = new();
+    readonly Dictionary<Type, IObjectPool<Goblin>> pools = new();
     
-    public static Flyweight Spawn(FlyweightSettings s) => Instance.GetPoolFor(s)?.Get();
-    public static void ReturnToPool(Flyweight f) => Instance.GetPoolFor(f.settings)?.Release(f);
+    public static Goblin Spawn(GoblinSettings s) => Instance.GetPoolFor(s)?.Get();
+    public static void ReturnToPool(Goblin f) => Instance.GetPoolFor(f.settings)?.Release(f);
 
-    IObjectPool<Flyweight> GetPoolFor(FlyweightSettings settings)
+    IObjectPool<Goblin> GetPoolFor(GoblinSettings settings)
     {
-        IObjectPool<Flyweight> pool;
+        IObjectPool<Goblin> pool;
 
         if (pools.TryGetValue(settings.GetType(), out pool)) return pool;
 
-        pool = new ObjectPool<Flyweight>(
+        pool = new ObjectPool<Goblin>(
             settings.Create, 
             settings.OnGet,
             settings.OnRelease,

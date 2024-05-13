@@ -8,18 +8,7 @@ using UnityEngine.EventSystems;
 public class Goblin : Entity
 {
     //public float smoothTimeMovement = 0.25f;
-    public override Flyweight.FlyweightSettings settings
-    {
-        set
-        {
-            addSettings = (GoblinSettings)value;
-        }
-        get
-        {
-            return addSettings;
-        }
-    }
-    public GoblinSettings addSettings;
+    public GoblinSettings settings;
     //[SerializeField] private LayerMask hitableLayer;
     //[SerializeField] private float cooldownAttack;
     Vector3 velocity = Vector3.zero;
@@ -32,7 +21,7 @@ public class Goblin : Entity
     {
         //rb.AddForce(new Vector3(direction.x, 0 ,direction.y) * speed, ForceMode.Force);
         transform.position = Vector3.SmoothDamp(transform.position, transform.position + Vector3.Scale(transform.forward.normalized, 
-                                                    (Vector3.forward + Vector3.right)) * addSettings.speed, ref velocity, addSettings.smoothTimeMovement);
+                                                    (Vector3.forward + Vector3.right)) * settings.speed, ref velocity, settings.smoothTimeMovement);
         
         //rb.velocity += new Vector3(direction.x, 0, direction.y) * speed;
         //transform.LookAt(transform.position + new Vector3(direction.x, 0, direction.y));
@@ -42,13 +31,14 @@ public class Goblin : Entity
     
     protected void Hit(GameObject enemy)
     {
-        enemy.GetComponent<IDamagable>().Damage(addSettings.damage);
+        enemy.GetComponent<IDamagable>().Damage(settings.damage);
     }
     public override void Death()
     {
         base.Death();
         PlayerStats.Gold.Score += 10; 
-        OnDestroy();
+        Flyweight.FlyweightFactory.ReturnToPool(this);
+        //OnDestroy();
     }
     private void Test(int a)
     {}
@@ -65,11 +55,11 @@ public class Goblin : Entity
         Vector2 dir = GridController.curFlowField.GetCellFromWorldPos(transform.position).bestDirection.Vector;
         direction = new Vector3(dir.x, 0, dir.y);
     
-        target = GetTarget(addSettings.hitableLayer, direction, 0.5f);
+        target = GetTarget(settings.hitableLayer, direction, 0.5f);
         if (GridController != null)
             Move(dir);
         if (target)
-            UnityExtensions.Cooldowned(true, new UnityExtensions.CooldownHit(Hit), target, addSettings.cooldownAttack, ref lastTimeAttack);
+            UnityExtensions.Cooldowned(true, new UnityExtensions.CooldownHit(Hit), target, settings.cooldownAttack, ref lastTimeAttack);
     }
     public GameObject GetTarget(LayerMask layerMask, Vector3 direction, float length)
     {

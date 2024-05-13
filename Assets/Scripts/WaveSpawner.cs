@@ -69,9 +69,9 @@ public class WaveSpawner : MonoBehaviour
         waveIndex++;
     }
     
-    void SpawnEnemy(FlyweightSettings s)
+    void SpawnEnemy(GoblinSettings s)
     {
-        Flyweight.Flyweight enemy = Flyweight.FlyweightFactory.Spawn(s);
+        Goblin enemy = Flyweight.FlyweightFactory.Spawn(s);
         
         enemy.transform.position = spawnPoint.position;
         enemy.transform.parent = transform;

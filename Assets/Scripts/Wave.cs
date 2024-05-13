@@ -7,7 +7,7 @@ using UnityEngine;
 public class Wave
 {
 
-    public FlyweightSettings enemy;
+    public GoblinSettings enemy;
     public int count;
     public float rate;
 

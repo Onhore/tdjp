@@ -310,11 +310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c1ee6fc07d6d043ab163a3839a7007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainSettings: {fileID: 0}
   health: {fileID: 7321712088734654238}
   GridController: {fileID: 0}
   rb: {fileID: 1840466110779792829}
-  addSettings: {fileID: 0}
+  settings: {fileID: 11400000, guid: ce9ac88e028c1454d80cd1361b1425dd, type: 2}
 --- !u!114 &7321712088734654238
 MonoBehaviour:
   m_ObjectHideFlags: 0

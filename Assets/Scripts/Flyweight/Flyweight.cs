@@ -22,7 +22,7 @@ public class Flyweight : MonoBehaviour
     public FlyweightSettings mainSettings;
     public void OnDestroy()
     {
-        FlyweightFactory.ReturnToPool(this);
+        //FlyweightFactory.ReturnToPool(this);
     }
 }
 
