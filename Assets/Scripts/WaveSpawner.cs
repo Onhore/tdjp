@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using Flyweight;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -69,12 +69,14 @@ public class WaveSpawner : MonoBehaviour
         waveIndex++;
     }
     
-    void SpawnEnemy(GameObject enemy)
+    void SpawnEnemy(FlyweightSettings s)
     {
-        GameObject newUnit1=Instantiate(enemy, spawnPoint.position, spawnPoint.rotation);
-        newUnit1.transform.parent = transform;
+        Flyweight.Flyweight enemy = Flyweight.FlyweightFactory.Spawn(s);
+        
+        enemy.transform.position = spawnPoint.position;
+        enemy.transform.parent = transform;
         //newUnit1.transform.position = position;
-        newUnit1.GetComponent<Goblin>().GridController = gridController;
+        enemy.GetComponent<Goblin>().GridController = gridController;
         //unitsInGame.Add(newUnit1);
 
     }

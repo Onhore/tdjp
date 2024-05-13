@@ -17,7 +17,7 @@ TagManager:
   - way
   - ground
   - tile
-  - 
+  - hitable_tile
   - 
   - 
   - 

@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour
+public abstract class Entity : Flyweight.Flyweight
 {
 
     [SerializeField] public Health health;
-    [SerializeField] protected float speed;
-    [SerializeField] protected int damage;
+    //public EntitySettings settings;
     public FlowFieldController GridController;
     //public int Health { get { return health; } }
-    public float Speed { get { return speed; } }
-    public int Damage {  get { return damage; } }
+    //public float Speed { get { return speed; } }
+    //public int Damage {  get { return damage; } }
 
     [SerializeField] protected Rigidbody rb;
     protected virtual void Move(Vector2 direction)
@@ -24,7 +23,7 @@ public abstract class Entity : MonoBehaviour
     }
     public virtual void Death()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public virtual void FaceTo(Vector2 direction)

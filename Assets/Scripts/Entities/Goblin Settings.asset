@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ce7740a680cb74e8ff977a43a398bd, type: 3}
+  m_Name: Goblin Settings
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5014208179401364884, guid: c4fd62c416459604e8e77e9cf7cf4a9a, type: 3}
+  speed: 10
+  damage: 3
+  hitableLayer:
+    serializedVersion: 2
+    m_Bits: 6144
+  cooldownAttack: 0.5
+  smoothTimeMovement: 0.25
