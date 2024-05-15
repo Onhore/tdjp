@@ -1,24 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public class NewBehaviourScript : MonoBehaviour
+public class VolumeValue : MonoBehaviour
 {
-    private AudioSource audioSrc;
-    private float musicVolume = 5f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        audioSrc = GetComponent<AudioSource>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        audioSrc.volume = musicVolume;
-    }
+    [SerializeField] private AudioMixer mixer;
+    
     public void SetVolume(float vol)
     {
-        musicVolume=vol;
+        mixer.SetFloat("MainVolume", vol);
     }
 }

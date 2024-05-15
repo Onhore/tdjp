@@ -10,6 +10,7 @@ namespace BuildSystem
         [SerializeField] private List<Element> elements;
         [SerializeField] private Element Base;
         [SerializeField] private Element Top;
+        public Element GetTop() => Top;
         
         [SerializeField] private int maxSize = 5;
 

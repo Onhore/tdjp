@@ -86,7 +86,7 @@ namespace GridSystem.Flowfields
                     {
                         //Debug.Log(curCell.staticCost);
                         //curCell.staticCost = MAX_COST;
-                        RadiusField(curCell, 5);
+                        RadiusField(curCell, curCell.cell.Tile.GetComponent<BuildSystem.Tower>().Size*2);
                         //continue;
                     }
                 

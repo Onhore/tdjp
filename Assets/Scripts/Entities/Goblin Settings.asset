@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Goblin Settings
   m_EditorClassIdentifier: 
   prefab: {fileID: 5014208179401364884, guid: c4fd62c416459604e8e77e9cf7cf4a9a, type: 3}
-  speed: 10
-  damage: 3
   hitableLayer:
     serializedVersion: 2
     m_Bits: 6144
-  cooldownAttack: 0.5
+  cooldownAttack: 0.7
   smoothTimeMovement: 0.25
+  speed: 3
+  damage: 1

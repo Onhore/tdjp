@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace BuildSystem
 {
-public enum BuildSelect { Null, Base, Middle, Window, Top };
+public enum BuildSelect { Null, Base, Middle, Window, Top, Mine };
 public class BuildManager : MonoBehaviour
 {
     [SerializeField] private GameObject TowerPrefab;
@@ -62,6 +62,9 @@ public class BuildManager : MonoBehaviour
                     case BuildSelect.Top:
                         TryBuildElement(cell, TopPrefab);
                         break;
+                    case BuildSelect.Mine:
+                        TryBuildElement(cell, TopPrefab);
+                        break;
             }
             //Select = BuildSelect.Null;
         }
@@ -92,7 +95,7 @@ public class BuildManager : MonoBehaviour
     }
     public void TryBuildElement(Cell cell, Element prefab)
     {
-        if (GridController.Instance.grid.IsCellOccupied(cell))
+        if (GridController.Instance.grid.IsCellOccupied(cell) && !(cell.Tile.GetComponent<Tower>().GetTop() is Top))
         {
             BuildElement(cell, prefab);
         }
@@ -108,6 +111,7 @@ public class BuildManager : MonoBehaviour
     public void BuildElement(Cell cell, Element prefab)
     {
         ((Tower)cell.Tile).AddElement(prefab);
+        GridController.Instance.UpdateStaticFields();
     }
     public void DestroyTower()
     {

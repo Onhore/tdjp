@@ -37,6 +37,7 @@ public static class UnityExtensions
                 method(hitObject);
             }
     }
+
     // public static void SetPosition(Transform _transform, Vector3 position)
     // {
 
