@@ -89,6 +89,11 @@ namespace GridSystem.Flowfields
                         RadiusField(curCell, curCell.cell.Tile.GetComponent<BuildSystem.Tower>().Size*2);
                         //continue;
                     }
+                    else if (curCell.cell.Tile != null)
+                    {
+                        RadiusField(curCell, 2);
+                        Debug.Log("424135fdgsdg");
+                    }
                 
             }
         }

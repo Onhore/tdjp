@@ -17,6 +17,7 @@ public class BuildManager : MonoBehaviour
     [SerializeField] private Element MiddlePrefab;
     [SerializeField] private Element WindowPrefab;
     [SerializeField] private Element TopPrefab;
+    [SerializeField] private GameObject MinePrefab;
     [SerializeField] private LayerMask GroundLayer;
     
     #region Singleton
@@ -46,7 +47,7 @@ public class BuildManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && Select != BuildSelect.Null && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray position = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(position, out var hitInfo, 200, GroundLayer) && hitInfo.transform.gameObject.layer == 10)
+            if (Physics.Raycast(position, out var hitInfo, 500, GroundLayer) && (hitInfo.transform.gameObject.layer == 10 || (hitInfo.transform.gameObject.layer == 12 && hitInfo.transform.gameObject.GetComponent<Tower>() != null)))
             {
                 Cell cell = GridController.Instance.grid.GetCellFromWorldPos(hitInfo.point);
                 switch(Select){
@@ -63,23 +64,55 @@ public class BuildManager : MonoBehaviour
                         TryBuildElement(cell, TopPrefab);
                         break;
                     case BuildSelect.Mine:
-                        TryBuildElement(cell, TopPrefab);
+                        TryBuildTile(cell, MinePrefab);
                         break;
+                    
             }
             //Select = BuildSelect.Null;
         }
         }
     }
+    public void TryBuildTile(Cell cell, GameObject tile)
+    {
+        if (GridController.Instance.grid.IsCellEmpty(cell))
+        {
+            if (!GetCost(20, 40))
+                return;
+            BuildTile(cell, tile);
+        }
+        else
+        {
+            Debug.Log("Нельзя поставить тайл!");
+        }
+        
+    }
+    public void BuildTile(Cell cell, GameObject tile)
+    {
+        GameObject gTile = Instantiate(tile, cell.WorldPos, Quaternion.identity, transform);
+        cell.Tile = gTile.GetComponent<Tile>();
+        GridController.Instance.UpdateStaticFields();
+    }
     public void TryBuildTower(Cell cell)
     {
         if (GridController.Instance.grid.IsCellEmpty(cell))
         {
+            if (!GetCost(20, 40))
+                return;
             BuildTower(cell);
         }
         else
         {
             Debug.Log("Нельзя поставить фундамент!");
         }
+    }
+    private bool GetCost(int gold, int rock)
+    {
+        if (PlayerStats.Gold.Score < gold || PlayerStats.Rock.Score < rock)
+            return false;
+        
+        PlayerStats.Gold.Score -= gold;
+        PlayerStats.Rock.Score -= rock;
+        return true;
     }
     /*public bool IsCellSuitable()
     {
@@ -97,6 +130,8 @@ public class BuildManager : MonoBehaviour
     {
         if (GridController.Instance.grid.IsCellOccupied(cell) && !(cell.Tile.GetComponent<Tower>().GetTop() is Top))
         {
+            if (!GetCost(20, 20))
+                return;
             BuildElement(cell, prefab);
         }
         else if (GridController.Instance.grid.IsCellEmpty(cell))

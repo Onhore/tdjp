@@ -41,23 +41,15 @@ public class PlayerStats : MonoBehaviour
     [Header("Stats")]
     public static PlayerState<int> Gold;
 	public static PlayerState<int> Rock;
-	public static PlayerState<int> Mana;
-    public static PlayerState<int> People;
 
 	[SerializeField] int startGold;
 	[SerializeField] int startRock;
-	[SerializeField] int startMana;
-	[SerializeField] int startPeople;
 	[SerializeField] TextMeshProUGUI GoldText;
 	[SerializeField] TextMeshProUGUI RockText;
-	[SerializeField] TextMeshProUGUI ManaText;
-	[SerializeField] TextMeshProUGUI PeopleText;
 
 	void Start ()
 	{
 		Gold = new PlayerState<int>(startGold, GoldText);
 		Rock = new PlayerState<int>(startRock, RockText);
-		Mana = new PlayerState<int>(startMana, ManaText);
-		People = new PlayerState<int>(startPeople, PeopleText);
 	}
 }
