@@ -16,4 +16,10 @@ public class Mine : BuildSystem.Tile
     {
         UnityExtensions.Cooldowned(true, GetRock, cooldown, ref lastTime);
     }
+    public override void Death()
+    {
+        GridController.Instance.grid.GetCellFromWorldPos(transform.position).Tile = null;
+        GridController.Instance.UpdateStaticFields();
+        base.Death();
+    }
 }
