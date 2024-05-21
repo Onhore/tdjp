@@ -50,13 +50,13 @@ public class Goblin : Entity
 
     void Update()
     {
-        if (GridController == null)
+        if (gridController == null)
             return;
-        Vector2 dir = GridController.curFlowField.GetCellFromWorldPos(transform.position).bestDirection.Vector;
+        Vector2 dir = gridController.curFlowField.GetCellFromWorldPos(transform.position).bestDirection.Vector;
         direction = new Vector3(dir.x, 0, dir.y);
     
         target = GetTarget(settings.hitableLayer, direction, 0.5f);
-        if (GridController != null)
+        if (gridController != null)
             Move(dir);
         if (target)
             UnityExtensions.Cooldowned(true, new UnityExtensions.CooldownHit(Hit), target, settings.cooldownAttack, ref lastTimeAttack);

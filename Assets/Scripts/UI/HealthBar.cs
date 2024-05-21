@@ -11,5 +11,5 @@ public class HealthBar : MonoBehaviour
     private void OnEnable() => _health.OnChange += UpdateBAR;
     private void OnDisable() => _health.OnChange -= UpdateBAR;
 
-    private void UpdateBAR() {_fillImage.fillAmount = _health.Ratio; Debug.Log(_health.Ratio);}
+    private void UpdateBAR() =>_fillImage.fillAmount = _health.Ratio; //Debug.Log(_health.Ratio);
 }

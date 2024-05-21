@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 7321712088734654238}
-  GridController: {fileID: 0}
+  gridController: {fileID: 0}
   rb: {fileID: 1840466110779792829}
   settings: {fileID: 11400000, guid: ce9ac88e028c1454d80cd1361b1425dd, type: 2}
 --- !u!114 &7321712088734654238
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b311ee6c16e794ca3af9bc628337d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial: 16
+  _initial: 25
   OnDie:
     m_PersistentCalls:
       m_Calls:

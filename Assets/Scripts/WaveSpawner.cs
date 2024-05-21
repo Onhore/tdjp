@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Flyweight;
+using UnityEngine.Events;
 
 public class WaveSpawner : MonoBehaviour
 {
 
-    public static int EnemiesAlive = 0;
+    public int EnemiesAlive =0;
+    public int enemiesCount;
 
     public Wave[] waves;
 
@@ -24,16 +26,17 @@ public class WaveSpawner : MonoBehaviour
 
     public FlowFieldController gridController;
 
+    public UnityEvent Win;
+
     void Update()
     {
-        //if (EnemiesAlive > 0)
-        //{
-        //    return;
-        //}
+        enemiesCount = FlyweightFactory.Instance.pools.ContainsKey(typeof(GoblinSettings)) ? FlyweightFactory.Instance.goblinCount - FlyweightFactory.Instance.pools[typeof(GoblinSettings)].CountInactive : -1;
+        if (EnemiesAlive > 0 && enemiesCount > 0)
+            return;
 
         if (waveIndex == waves.Length)
         {
-            //gameManager.WinLevel();
+            Win.Invoke();
             this.enabled = false;
         }
 
@@ -49,7 +52,7 @@ public class WaveSpawner : MonoBehaviour
         countdown = Mathf.Clamp(countdown, 0f, Mathf.Infinity);
 
         //waveCountdownText.text = string.Format("{0:00.00}", countdown);
-        Debug.Log(countdown);
+        //Debug.Log(countdown);
     }
 
     IEnumerator SpawnWave()
@@ -76,7 +79,7 @@ public class WaveSpawner : MonoBehaviour
         enemy.transform.position = spawnPoint.position;
         enemy.transform.parent = transform;
         //newUnit1.transform.position = position;
-        enemy.GetComponent<Goblin>().GridController = gridController;
+        //enemy.GetComponent<Goblin>().GridController = gridController;
         //unitsInGame.Add(newUnit1);
 
     }

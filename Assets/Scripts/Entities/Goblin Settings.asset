@@ -18,5 +18,5 @@ MonoBehaviour:
     m_Bits: 6144
   cooldownAttack: 0.7
   smoothTimeMovement: 0.25
-  speed: 3
+  speed: 2
   damage: 1

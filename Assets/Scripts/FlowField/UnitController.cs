@@ -64,7 +64,7 @@ public class UnitController : MonoBehaviour
         GameObject newUnit1 = Instantiate(unitPrefab);
         newUnit1.transform.parent = transform;
         newUnit1.transform.position = position;
-        newUnit1.GetComponent<Goblin>().GridController = gridController;
+        //newUnit1.GetComponent<Goblin>().gridController = gridController;
         unitsInGame.Add(newUnit1);
         //
         //Vector2Int gridSize = gridController.gridSize;

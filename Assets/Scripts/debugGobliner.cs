@@ -10,7 +10,7 @@ public class debugGobliner : MonoBehaviour
     {
         if(debugs.Contains(collision.gameObject.layer))
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Goblin>().Death();
         }
     }
 }

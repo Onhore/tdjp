@@ -49,6 +49,7 @@ public class BuildManager : MonoBehaviour
             Ray position = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(position, out var hitInfo, 500, GroundLayer) && (hitInfo.transform.gameObject.layer == 10 || (hitInfo.transform.gameObject.layer == 12 && hitInfo.transform.gameObject.GetComponent<Tower>() != null)))
             {
+                
                 Cell cell = GridController.Instance.grid.GetCellFromWorldPos(hitInfo.point);
                 switch(Select){
                     case BuildSelect.Base:

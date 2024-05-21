@@ -30,8 +30,8 @@ public class FlyweightFactory : MonoBehaviour
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultCapacity = 10;
     [SerializeField] int maxPoolSize = 100;
-
-    readonly Dictionary<Type, IObjectPool<Goblin>> pools = new();
+    public int goblinCount;
+    public readonly Dictionary<Type, IObjectPool<Goblin>> pools = new();
     
     public static Goblin Spawn(GoblinSettings s) => Instance.GetPoolFor(s)?.Get();
     public static void ReturnToPool(Goblin f) => Instance.GetPoolFor(f.settings)?.Release(f);

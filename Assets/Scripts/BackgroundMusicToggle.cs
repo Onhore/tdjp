@@ -1,28 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public class BackgroundMusicToggle : MonoBehaviour
 {
     [SerializeField] AudioSource BackgroundMusic;
-
-    private bool isEnadle = true;
-    public void Update()
-    {
-        if (isEnadle)
-        {
-            BackgroundMusic.enabled = true;
-        }
-        else
-            BackgroundMusic.enabled = false;
-    }
-    public void EnableMusic()
-    {
-        if (isEnadle)
-        {
-            isEnadle = false;
-        }
-        else
-            isEnadle = true;
-    }
+    public void EnableMusic() => BackgroundMusic.enabled = !BackgroundMusic.enabled;
+    
 }
