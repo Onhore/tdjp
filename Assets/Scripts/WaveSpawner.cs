@@ -65,18 +65,22 @@ public class WaveSpawner : MonoBehaviour
 
         for (int i = 0; i < wave.count; i++)
         {
-            SpawnEnemy(wave.enemy);
-            yield return new WaitForSeconds(1f / wave.rate);
+            SpawnEnemy(wave.enemy, spawnPoint.position);
+            SpawnEnemy(wave.enemy, spawnPoint.position+new Vector3(0,0,2));
+            SpawnEnemy(wave.enemy, spawnPoint.position+new Vector3(0,0,-2));
+            SpawnEnemy(wave.enemy, spawnPoint.position+new Vector3(2,0,0));
+            SpawnEnemy(wave.enemy, spawnPoint.position+new Vector3(-2,0,0));
+            yield return new WaitForSeconds(wave.rate);
         }
 
         waveIndex++;
     }
     
-    void SpawnEnemy(GoblinSettings s)
+    void SpawnEnemy(GoblinSettings s, Vector3 position)
     {
         Goblin enemy = Flyweight.FlyweightFactory.Spawn(s);
         
-        enemy.transform.position = spawnPoint.position;
+        enemy.transform.position = position;
         enemy.transform.parent = transform;
         //newUnit1.transform.position = position;
         //enemy.GetComponent<Goblin>().GridController = gridController;

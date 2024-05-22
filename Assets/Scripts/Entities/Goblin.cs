@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Media;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Goblin : Entity
 {
