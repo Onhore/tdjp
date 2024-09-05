@@ -37555,7 +37555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &876788822
 Transform:
   m_ObjectHideFlags: 0
@@ -37605,6 +37605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a28c72f6e42e6a48ae67f20a54b32bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridController: {fileID: 958076685}
+  displayGrid: 0
+  curDisplayType: 0
 --- !u!4 &876908604 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27611bd1dec0f6b489fee15bd3e67e8f, type: 3}
@@ -40466,6 +40469,7 @@ MonoBehaviour:
     tag: goblin
     grid:
       tag: 
+  gridDebug: {fileID: 876788824}
   gate: {fileID: 1176208802}
 --- !u!1 &960828245 stripped
 GameObject:
@@ -44256,7 +44260,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1024632141}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
@@ -54292,7 +54296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6325850108138402960, guid: 578ab356b06469c458c74c7bc5cd4af9, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6325850108138402960, guid: 578ab356b06469c458c74c7bc5cd4af9, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
@@ -60229,7 +60233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.57600003}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -9.021271, y: 3.9000244}
+  m_AnchoredPosition: {x: -9.02124, y: 3.9000244}
   m_SizeDelta: {x: -462.2902, y: -34.881}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1370392398

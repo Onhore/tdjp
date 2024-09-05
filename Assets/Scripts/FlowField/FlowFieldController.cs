@@ -13,7 +13,7 @@ public class FlowFieldController : MonoBehaviour
     public FlowField curFlowField;
     //public Dictionary<GridSystem.Grid, Dictionary<string, FlowField>> FlowfieldsDictionary;
     //public Dictionary<string, FlowField> Flowfields;
-    //public FlowFieldDebug gridDebug;
+    public FlowFieldDebug gridDebug;
     public GameObject gate;
     FlowCell destinationCell;
 
@@ -26,7 +26,7 @@ public class FlowFieldController : MonoBehaviour
         Debug.Log("Create StaticCosts");
         curFlowField.CreateStaticCostField();
         Debug.Log("Done");
-        //gridDebug.SetFlowField(curFlowField);
+        gridDebug.SetFlowField(curFlowField);
     }
     private void Start()
     {
@@ -50,7 +50,7 @@ public class FlowFieldController : MonoBehaviour
             Debug.Log("Done");
             curFlowField.CreateFlowField();
 
-            //gridDebug.DrawFlowField();
+            gridDebug.DrawFlowField();
     }
     private void Update()
     {
@@ -77,7 +77,7 @@ public class FlowFieldController : MonoBehaviour
         curFlowField.GateField(destinationCell);
         curFlowField.CreateTowerField();
         curFlowField.CreateFlowField();
-        //gridDebug.DrawFlowField();
+        gridDebug.DrawFlowField();
     }
     private void UpdateDynamicFields()
     {
